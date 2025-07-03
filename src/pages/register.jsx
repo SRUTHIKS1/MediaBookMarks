@@ -88,7 +88,7 @@ const Register = () => {
         </h2>
 
         <form className="space-y-5" onSubmit={handleSubmit}>
-          {/* Name */}
+          {/* Nam */}
           <div className="relative">
             <span className="absolute left-3 top-3 text-lg">👤</span>
             <input
