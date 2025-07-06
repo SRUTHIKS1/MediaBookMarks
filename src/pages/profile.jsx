@@ -1,76 +1,65 @@
-const ProfilePage = () => {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-rose-400 to-purple-500 p-4">
-      <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-          👤 Profile Settings
-        </h2>
+import { useEffect, useState } from "react"
+import { getUserDetails } from "../Apiservice/allApi"
+import { useNavigate } from "react-router-dom"
 
-        <form className="space-y-5">
-          {/* Profile Picture Upload */}
-          <div className="text-center">
+const Profile = () => {
+    const [user, setUser] = useState()
+    const [img, setImg] = useState()
+    const [previwimg, setPreviwimg] = useState()
+    const navigate = useNavigate();
+
+
+    useEffect(() => {
+        const userData= JSON.parse(localStorage.getItem("userCredential"))
+        const userid=userData.userId
+             // console.log(userData.userId)
+        const get=async()=>{
+            const usrD= await getUserDetails(userid)
+            console.log(usrD?.data?.data)
+            setUser(usrD?.data?.data)
+            setImg(usrD?.data?.data?.Image)
+        
+
+        }
+    get()
+        
+},[])
+
+
+
+    return (
+        <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-purple-200 to-indigo-300 p-6">
+            <div className="bg-white p-8 rounded-2xl shadow-xl w-96 text-center">
+
+
+            <div className="relative h-32 w-32">
             <img
-              src="https://via.placeholder.com/100"
-              alt="Profile"
-              className="w-24 h-24 rounded-full mx-auto mb-2 border"
-            />
-            <input
-              type="file"
-              className="block w-full text-sm text-gray-600 file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-100 file:text-purple-700 hover:file:bg-purple-200 mt-2"
-            />
-          </div>
+                       src={img ? `http://localhost:3000${img}` : ""}
+                        alt=""
+                        className="w-32 h-32 rounded-full border-2 border-gray-300 "
+                    />
+                    
+                </div>
 
-          {/* Full Name */}
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-lg">🧑</span>
-            <input
-              type="text"
-              placeholder="Full Name"
-              required
-              className="w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"
-            />
-          </div>
 
-          {/* Email */}
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-lg">✉️</span>
-            <input
-              type="email"
-              placeholder="Email"
-              required
-              className="w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"
-            />
-          </div>
+                <div className="flex flex-col justify-center">
+                    <h2 className="text-xl font-semibold text-gray-800"></h2>
+                    <p className="text-gray-500">{user?.name || "User Name"}</p>
+                    <p className="text-gray-500">{user?.email || "Email"} </p>
 
-          {/* New Password */}
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-lg">🔒</span>
-            <input
-              type="password"
-              placeholder="New Password"
-              className="w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"
-            />
-          </div>
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full bg-purple-600 text-white font-semibold py-2 rounded-md hover:bg-purple-700 transition"
-          >
-            Save Changes
-          </button>
-        </form>
+                    <button className=" mt-4 w-full bg-sky-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition" 
+                     onClick={() => navigate("/editprofile", { state: { user } })}>
+                        Edit Profile
+                    </button>
+                </div>
+            </div>
 
-        {/* Footer */}
-        <div className="text-center mt-4 text-sm text-gray-600">
-          Want to logout?{" "}
-          <a href="/logout" className="text-purple-700 hover:underline">
-            Logout
-          </a>
+            
+
         </div>
-      </div>
-    </div>
-  );
-};
 
-export default ProfilePage;
+    )
+}
+
+export default Profile

@@ -70,7 +70,7 @@ const Register = () => {
       setIsSubmitting(false);
     }
 
-    alert(`name: ${studentDetails.name}\nemail: ${studentDetails.email}\npassword: ${studentDetails.password}`);
+    // alert(`name: ${studentDetails.name}\nemail: ${studentDetails.email}\npassword: ${studentDetails.password}`);
   };
 
   return (
