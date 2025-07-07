@@ -41,17 +41,17 @@ const EditProfile = () => {
             formData.append("contact", userData.contact)
             formData.append("location", userData.location)
 
-            // const token = localStorage.getItem("token");
-            // const headers = {
-            //     "Content-Type": "multipart/form-data",
-            //     "authorization": `Bearer ${token}`
-            // };
+            const token = localStorage.getItem("token");
+            const headers = {
+                "Content-Type": "multipart/form-data",
+                "authorization": `Bearer ${token}`
+            };
             const response = await editUserDetails(userData?.userId, formData, headers)
             if (response.status === 200) {
                 alert("Profile updated successfully!");
 
                 // Navigate to profile page and pass updated data
-                navigate("/profilepage");
+                navigate("/profile");
             } else {
                 alert("Failed to update profile. Please try again.");
             }

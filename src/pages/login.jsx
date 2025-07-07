@@ -75,8 +75,8 @@ const Login = () => {
             return error
 
         }
-        alert(`userName:${userDetails.name}\n email:${userDetails.email}\n password:${userDetails.password}\n
-                `)
+        // alert(`userName:${userDetails.name}\n email:${userDetails.email}\n password:${userDetails.password}\n
+        //         `)
 
 
 
