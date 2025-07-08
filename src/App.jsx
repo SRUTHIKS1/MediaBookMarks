@@ -1,7 +1,6 @@
 import Forgotpassword from "./pages/forgotPassword"
 import Login from "./pages/login"
 import Register from "./pages/register"
-import ResetPassword from "./pages/resetPassword"
 import './App.css';
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import Folderpage from "./pages/folder";
@@ -14,6 +13,9 @@ import Home from "./pages/home";
 import Profile from "./pages/profile";
 import EditProfile from "./pages/editprofile";
 import ForgotPassword from "./pages/forgotPassword";
+import ResetPassword from "./pages/resetpassword";
+
+
 
 
 
@@ -33,8 +35,8 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/bookmarks" element={<Bookmarks />} />
       
-          <Route path="/forgotpassword" element={<ForgotPassword />} />
-          <Route path="/resetpassword/:token" element={<ResetPassword />} />
+          <Route path="/forgotPassword" element={<ForgotPassword />} />
+          <Route path="/resetPassword/:token" element={<ResetPassword/>} />
            <Route path="/folder" element={<Folderpage />} />
             <Route path="/profile" element={<Profile/>} />
             <Route path="/editprofile" element={<EditProfile />} />
