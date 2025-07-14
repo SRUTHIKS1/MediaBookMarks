@@ -24,3 +24,18 @@ export const resetPasswordRequest = async (data) => {
 export const resetPassword = async (token, data) => {
   return await commonApi("POST", `${baseUrl}resetPassword/${token}`, data);
 };
+export const createFolder = async (data, headers) => {
+  return await commonApi("POST", `${baseUrl}folders/create`, data, headers);
+};
+export const getFolders = async (headers) => {
+  return await commonApi("GET", `${baseUrl}folders`, null, headers);
+};
+export const createBookmark = async (data, headers) => {
+  return await commonApi("POST", `${baseUrl}bookmarks/create`, data, headers);
+};
+export const editBookmark = async (bookmarkId, data, headers) => {
+  return await commonApi("PUT", `${baseUrl}bookmarks/edit/${bookmarkId}`, data, headers);
+};
+export const getBookmarksByFolderId = async (folderId, headers) => {
+  return await commonApi("GET", `${baseUrl}bookmarks/folder/${folderId}`, null, headers);
+};

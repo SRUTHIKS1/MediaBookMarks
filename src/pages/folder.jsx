@@ -1,33 +1,75 @@
-const Folderpage = () => {
+import React, { useState } from "react";
+import { createFolder } from "../Apiservice/allApi"; // import API function
+import { toast, ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router";
+
+const FolderPage = () => {
+  const [folderName, setFolderName] = useState("");
+  const navigate = useNavigate();
+
+  const notify = (type, message) => {
+    toast[type](message, {
+      position: "top-right",
+      autoClose: 4000,
+      theme: "colored",
+    });
+  };
+
+  const handleCreateFolder = async (e) => {
+    e.preventDefault();
+
+    if (!folderName.trim()) {
+      notify("error", "Folder name is required.");
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+
+      const headers = {
+        Authorization: `Bearer ${token}`, // ✅ This must match backend's jwtMiddleware
+        "Content-Type": "application/json",
+      };
+
+      const response = await createFolder({ name: folderName }, headers);
+
+      if (response.status === 201) {
+        notify("success", response.data.message);
+        setFolderName("");
+    navigate("/bookmarks")
+      }
+
+    } catch (err) {
+      console.error(err);
+      notify("error", "Folder creation failed.");
+    }
+  };
+
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-4">
-      <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Create New Folder</h2>
-        <form className="space-y-4">
-          <div className="relative">
-            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-xl">📁</span>
-            <input
-              type="text"
-              placeholder="Folder name"
-              required
-              className="w-full pl-10 pr-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-purple-600 text-white font-semibold py-2 rounded-md hover:bg-purple-700 transition"
-          >
-            Create Folder
-          </button>
-        </form>
-
-        <div className="text-center mt-4 text-sm text-gray-600">
-          Go back to <a href="/home" className="text-purple-600 hover:underline">Home</a>
-        </div>
-      </div>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+      <form
+        onSubmit={handleCreateFolder}
+        className="bg-white p-6 rounded-lg shadow-md w-full max-w-md"
+      >
+        <h2 className="text-2xl font-bold mb-4 text-center">Create Folder</h2>
+        <input
+          type="text"
+          value={folderName}
+          onChange={(e) => setFolderName(e.target.value)}
+          placeholder="Enter folder name"
+          className="w-full p-3 border border-gray-300 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+        />
+        <button
+          type="submit"
+          className="w-full bg-indigo-600 text-white py-2 rounded hover:bg-indigo-700 transition"
+        >
+          Create Folder
+        </button>
+      </form>
+      <ToastContainer />
     </div>
   );
 };
 
-export default Folderpage;
+export default FolderPage;
