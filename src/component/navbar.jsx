@@ -15,9 +15,10 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { path: "/", name: "Home" },
-    { path: "/bookmarks", name: "Bookmarks" },
+    { path: "/home", name: "Home" },
     { path: "/folder", name: "Folders" },
+    { path: "/bookmarks", name: "Bookmarks" },
+    
     { path: "/profile", name: "Profile" },
     { path: "/login", name: "Login" },
   ];

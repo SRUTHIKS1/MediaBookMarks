@@ -39,3 +39,14 @@ export const editBookmark = async (bookmarkId, data, headers) => {
 export const getBookmarksByFolderId = async (folderId, headers) => {
   return await commonApi("GET", `${baseUrl}bookmarks/folder/${folderId}`, null, headers);
 };
+
+export const deleteBookmark = async (bookmarkId, headers) => {
+  return await commonApi("DELETE", `${baseUrl}bookmarks/delete/${bookmarkId}`, null, headers);
+};
+export const renameFolder = async (folderId, data, headers) => {
+  return await commonApi("PUT", `${baseUrl}folders/rename/${folderId}`, data, headers);
+};
+
+export const deleteFolder = async (folderId, headers) => {
+  return await commonApi("DELETE", `${baseUrl}folders/delete/${folderId}`, null, headers);
+};

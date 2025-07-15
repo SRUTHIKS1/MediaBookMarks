@@ -2,174 +2,123 @@ import React, { useState, useEffect } from "react";
 import { createBookmark, getFolders } from "../Apiservice/allApi";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router";
 
-
-// 🔍 Extract YouTube thumbnail
+// Extract YouTube thumbnail
 const getYoutubeThumbnail = (url) => {
-  const match = url.match(
-    /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/
-  );
-  return match && match[1]
-    ? `https://img.youtube.com/vi/${match[1]}/0.jpg`
-    : "";
+  const match = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  return match ? `https://img.youtube.com/vi/${match[1]}/0.jpg` : "";
 };
-
 
 const BookmarkPage = () => {
   const [folders, setFolders] = useState([]);
-  const [selectedFolderId, setSelectedFolderId] = useState("");
-  const [title, setTitle] = useState("");
-  const [url, setUrl] = useState("");
-  const [description, setDescription] = useState("");
-  const [thumbnail, setThumbnail] = useState("");
-  const navigate = useNavigate();
+  const [form, setForm] = useState({
+    title: "",
+    url: "",
+    description: "",
+    folderId: "",
+    thumbnail: "",
+  });
 
-  // 🔁 Load folders
   useEffect(() => {
     const fetchFolders = async () => {
       try {
         const token = localStorage.getItem("token");
-        const headers = {
-          Authorization: `Bearer ${token}`,
-        };
-
+        const headers = { Authorization: `Bearer ${token}` };
         const res = await getFolders(headers);
-        if (res.status === 200) {
-          setFolders(res.data.folders);
-        } else {
-          toast.error("Failed to load folders");
-        }
-      } catch (err) {
-        console.error("Error fetching folders:", err);
-        toast.error("Error fetching folders");
+        if (res.status === 200) setFolders(res.data.folders);
+      } catch {
+        toast.error("Failed to load folders");
       }
     };
-
     fetchFolders();
   }, []);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    let updated = { ...form, [name]: value };
+    if (name === "url") updated.thumbnail = getYoutubeThumbnail(value);
+    setForm(updated);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!title || !url || !selectedFolderId) {
+    if (!form.title || !form.url || !form.folderId) {
       toast.error("Please fill all required fields");
       return;
     }
 
+    const token = localStorage.getItem("token");
+    const headers = { Authorization: `Bearer ${token}`, "Content-Type": "application/json" };
+
     try {
-      const token = localStorage.getItem("token");
-      const headers = {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      };
-
-      const payload = {
-        title,
-        url,
-        description,
-        folderId: selectedFolderId,
-        thumbnail,
-      };
-
-      const res = await createBookmark(payload, headers);
+      const res = await createBookmark(form, headers);
       if (res.status === 201) {
-        toast.success("Bookmark added successfully!");
-        navigate('/folderList');
-        // Clear form
-        setTitle("");
-        setUrl("");
-        setDescription("");
-        setSelectedFolderId("");
-        setThumbnail("");
-      } else {
-        toast.error("Failed to add bookmark");
-      }
-    } catch (err) {
-      console.error("Error adding bookmark:", err);
+        toast.success("Bookmark added!");
+        setForm({ title: "", url: "", description: "", folderId: "", thumbnail: "" });
+      } else toast.error("Failed to add bookmark");
+    } catch {
       toast.error("Error adding bookmark");
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6 flex items-center justify-center">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white shadow-md p-6 rounded-lg w-full max-w-md"
-      >
-        <h2 className="text-xl font-bold mb-4 text-center">Add Bookmark</h2>
+    <div className="min-h-screen bg-gray-50 p-6 flex justify-center">
+      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+        <h2 className="text-xl font-bold mb-4">Add YouTube Bookmark</h2>
 
-        {/* Folder Dropdown */}
-        <label className="block mb-1 text-gray-700">Select Folder *</label>
+        <label className="block mb-1">Select Folder *</label>
         <select
-          value={selectedFolderId}
-          onChange={(e) => setSelectedFolderId(e.target.value)}
+          name="folderId"
+          value={form.folderId}
+          onChange={handleChange}
           className="w-full mb-4 p-2 border rounded"
-          required
         >
           <option value="">-- Choose Folder --</option>
-          {folders.map((folder) => (
-            <option key={folder._id} value={folder.folderId}>
-              {folder.name}
+          {folders.map((f) => (
+            <option key={f._id} value={f.folderId}>
+              {f.name}
             </option>
           ))}
         </select>
 
-        {/* Title */}
-        <label className="block mb-1 text-gray-700">Title *</label>
+        <label className="block mb-1">Title *</label>
         <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Video title"
+          name="title"
+          value={form.title}
+          onChange={handleChange}
           className="w-full mb-4 p-2 border rounded"
           required
         />
 
-        {/* YouTube URL */}
-        <label className="block mb-1 text-gray-700">YouTube URL *</label>
+        <label className="block mb-1">YouTube URL *</label>
         <input
-          type="text"
-          value={url}
-          onChange={(e) => {
-            setUrl(e.target.value);
-            const thumb = getYoutubeThumbnail(e.target.value);
-            setThumbnail(thumb);
-          }}
-          placeholder="https://youtube.com/..."
+          name="url"
+          value={form.url}
+          onChange={handleChange}
           className="w-full mb-4 p-2 border rounded"
           required
         />
 
-        {/* Description */}
-        <label className="block mb-1 text-gray-700">Description</label>
+        <label className="block mb-1">Description</label>
         <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Optional"
-          className="w-full mb-4 p-2 border rounded min-h-[100px]"
-        />
-
-        {/* Thumbnail Input */}
-        <label className="block mb-1 text-gray-700">Thumbnail URL</label>
-        <input
-          type="text"
-          value={thumbnail}
-          onChange={(e) => setThumbnail(e.target.value)}
-          placeholder="Auto-generated or custom thumbnail"
+          name="description"
+          value={form.description}
+          onChange={handleChange}
           className="w-full mb-4 p-2 border rounded"
         />
 
-        {/* Thumbnail Preview */}
-        {thumbnail && (
-          <img
-            src={thumbnail}
-            alt="Thumbnail Preview"
-            className="mb-4 rounded shadow-md w-full"
-          />
+        <label className="block mb-1">Thumbnail (auto-generated)</label>
+        <input
+          name="thumbnail"
+          value={form.thumbnail}
+          onChange={handleChange}
+          className="w-full mb-4 p-2 border rounded"
+        />
+
+        {form.thumbnail && (
+          <img src={form.thumbnail} alt="Thumbnail" className="mb-4 rounded shadow w-full" />
         )}
 
-        {/* Submit */}
         <button
           type="submit"
           className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded"

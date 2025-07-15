@@ -45,7 +45,7 @@ function App() {
            <Route path="/folder" element={<FolderPage/>} />
             <Route path="/profile" element={<Profile/>} />
             <Route path="/editprofile" element={<EditProfile />} />
-             <Route path="/folderList" element={<FolderListPage />} />
+             {/* <Route path="/folderList" element={<FolderListPage />} /> */}
       
     </Routes>
     </Provider>
