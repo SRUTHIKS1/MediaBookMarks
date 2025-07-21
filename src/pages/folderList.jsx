@@ -7,6 +7,7 @@ import {
   renameFolder,
   deleteFolder,
 } from "../Apiservice/allApi";
+import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { Edit2, Trash2, ChevronDown, ChevronRight } from "lucide-react";
 import "react-toastify/dist/ReactToastify.css";
@@ -28,6 +29,7 @@ const FolderListPage = () => {
 
   const token = localStorage.getItem("token");
   const headers = { Authorization: `Bearer ${token}` };
+  const navigate = useNavigate();
 
   const fetchFolders = async () => {
     try {
@@ -155,13 +157,21 @@ const FolderListPage = () => {
               {expandedFolders[folder.folderId] && (
                 <>
                   <p className="text-sm text-gray-500 mb-2">Folder ID: {folder.folderId}</p>
+
+                  {/* ➕ Add Bookmark Button */}
+                  <button
+                    onClick={() =>
+                      navigate("/bookmarks", { state: { folderId: folder.folderId } })
+                    }
+                    className="mb-3 px-3 py-1 bg-indigo-500 text-white rounded hover:bg-indigo-600 text-sm"
+                  >
+                    + Add Bookmark
+                  </button>
+
                   {bookmarksByFolder[folder.folderId]?.length > 0 ? (
                     <ul className="space-y-4 mt-3">
                       {bookmarksByFolder[folder.folderId].map((bookmark) => (
-                        <li
-                          key={bookmark._id}
-                          className="bg-gray-100 p-4 rounded shadow-sm"
-                        >
+                        <li key={bookmark._id} className="bg-gray-100 p-4 rounded shadow-sm">
                           <div className="flex items-center gap-4">
                             <img
                               src={bookmark.thumbnail}
@@ -179,7 +189,6 @@ const FolderListPage = () => {
                               </a>
                               <p className="text-sm text-gray-500">{bookmark.description}</p>
 
-                              {/* YouTube iframe preview */}
                               {extractYouTubeId(bookmark.url) && (
                                 <iframe
                                   src={`https://www.youtube.com/embed/${extractYouTubeId(bookmark.url)}`}

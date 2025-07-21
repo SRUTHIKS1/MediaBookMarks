@@ -1,21 +1,20 @@
-import { useEffect, useState } from "react"
-import { getUserDetails } from "../Apiservice/allApi"
-import { useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react";
+import { getUserDetails } from "../Apiservice/allApi";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
-  const [user, setUser] = useState({})
-  const [img, setImg] = useState("")
+  const [user, setUser] = useState({});
+  const [img, setImg] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("userCredential"));
-    const userid = userData?.userId;
-    if (!userid) return;
+    const userId = userData?.userId;
+    if (!userId) return;
 
     const get = async () => {
       try {
-        const usrD = await getUserDetails(userid);
-        console.log("Fetched user:", usrD?.data?.data);
+        const usrD = await getUserDetails(userId);
         setUser(usrD?.data?.data);
         setImg(usrD?.data?.data?.Image);
       } catch (err) {
@@ -27,23 +26,45 @@ const Profile = () => {
   }, []);
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-purple-200 to-indigo-300 p-6">
-      <div className="bg-white p-8 rounded-2xl shadow-xl w-96 text-center">
-        <div className="relative h-32 w-32 mx-auto">
-           <img
-                    src={img ? `http://localhost:3000${img}` : ""}
-                    alt="Profile"
-                    className="w-32 h-32 rounded-full border-2 border-gray-300 object-cover"
-                  />
+    <div className="min-h-screen flex justify-center items-center bg-gray-100">
+      <div className="bg-white shadow-lg rounded-xl w-full max-w-xl p-8">
+        {/* Header Section */}
+        <div className="flex items-center gap-6 border-b pb-6">
+          <img
+            src={img ? `http://localhost:3000${img}` : "/default-user.png"}
+            alt="User"
+            className="w-24 h-24 rounded-full object-cover border border-gray-300 shadow"
+          />
+          <div>
+            <h1 className="text-2xl font-bold text-gray-800">
+              {user?.name || "User Name"}
+            </h1>
+            <p className="text-sm text-gray-500">{user?.email || "user@email.com"}</p>
+            <p className="text-sm text-gray-500">{user?.mobile ? `📞 ${user.mobile}` : ""}</p>
+          </div>
         </div>
 
-        <div className="flex flex-col justify-center mt-4">
-          <h2 className="text-xl font-semibold text-gray-800">{user?.name || "User Name"}</h2>
-          {/* <p className="text-gray-500">{user?.email || "Email not available"}</p> */}
+        {/* Info Section */}
+        <div className="mt-6 grid grid-cols-2 gap-4 text-sm text-gray-700">
+          <div>
+            <p className="font-semibold text-gray-500">Username</p>
+            <p>{user?.name || "N/A"}</p>
+          </div>
+          <div>
+            <p className="font-semibold text-gray-500">Registered On</p>
+            <p>{new Date(user?.createdAt).toLocaleDateString() || "N/A"}</p>
+          </div>
+          <div>
+            <p className="font-semibold text-gray-500">User ID</p>
+            <p>{user?.userId || "N/A"}</p>
+          </div>
+        </div>
 
+        {/* Button */}
+        <div className="mt-8">
           <button
-            className="mt-4 w-full bg-sky-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition"
             onClick={() => navigate("/editprofile", { state: { user } })}
+            className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition duration-200"
           >
             Edit Profile
           </button>
