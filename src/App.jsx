@@ -17,7 +17,8 @@ import EditProfile from "./pages/editprofile";
 
 import ResetPassword from "./pages/resetpassword";
 import FolderPage from "./pages/folder";
-import ForgotPassword from "./pages/forgotPassword";
+import ForgotPassword from "./passwordpage/forgotPassword";
+
 
 
 
