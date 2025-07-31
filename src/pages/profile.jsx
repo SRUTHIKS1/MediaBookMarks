@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getUserDetails } from "../Apiservice/allApi";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../component/navbar";
 
 const Profile = () => {
   const [user, setUser] = useState({});
@@ -26,7 +27,14 @@ const Profile = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-100">
+    <>
+    <Navbar/>
+    <div className="min-h-screen flex justify-center items-center bg-gray-100"
+    style={{
+        backgroundImage: "url(https://www.shutterstock.com/image-photo/digital-bookmark-internet-data-technology-260nw-469621283.jpg)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}>
       <div className="bg-white shadow-lg rounded-xl w-full max-w-xl p-8">
         {/* Header Section */}
         <div className="flex items-center gap-6 border-b pb-6">
@@ -71,6 +79,8 @@ const Profile = () => {
         </div>
       </div>
     </div>
+    </>
+    
   );
 };
 

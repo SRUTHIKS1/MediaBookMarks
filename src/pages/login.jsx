@@ -105,7 +105,7 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-blue-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
     style={{
-        backgroundImage: "url('https://images.unsplash.com/photo-1507842217343-583bb7270b66')",
+        backgroundImage: "url(https://www.shutterstock.com/image-photo/digital-bookmark-internet-data-technology-260nw-469621283.jpg)",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}>

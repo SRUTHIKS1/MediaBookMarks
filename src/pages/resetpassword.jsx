@@ -81,7 +81,11 @@ const ResetPassword = () => {
   const strengthLevel = getPasswordStrengthLevel();
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-indigo-100 to-blue-50">
+    <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-indigo-100 to-blue-50" style={{
+        backgroundImage: "url(https://www.shutterstock.com/image-photo/digital-bookmark-internet-data-technology-260nw-469621283.jpg)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}>
       <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md border border-gray-100">
         <div className="flex justify-center mb-6">
           <div className="bg-indigo-100 p-3 rounded-full">

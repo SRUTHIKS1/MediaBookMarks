@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router";
 import { editUserDetails } from "../Apiservice/allApi";
+import Navbar from "../component/navbar";
 
 
 const EditProfile = () => {
@@ -61,8 +62,14 @@ const EditProfile = () => {
         }
     };
     return (
-
-        <div className="flex justify-center items-center  bg-gray-100">
+        <>
+        <Navbar/>
+        <div className="flex justify-center items-center  bg-gray-100"
+        style={{
+        backgroundImage: "url(https://www.shutterstock.com/image-photo/digital-bookmark-internet-data-technology-260nw-469621283.jpg)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}>
             <div className="bg-white p-8 rounded-lg  w-96">
                 <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">
                     Edit Your Profile
@@ -72,7 +79,7 @@ const EditProfile = () => {
 
                     <div className="relative h-32 w-32">
                         <img
-                           src={img? URL.createObjectURL(img):`http://localhost:3000${user?.Image}`}
+                            src={img ? URL.createObjectURL(img) : `http://localhost:3000${user?.Image}`}
                             alt=""
                             className="w-32 h-32 rounded-full border-2 border-gray-300 "
                         />
@@ -94,13 +101,13 @@ const EditProfile = () => {
 
                     <div>
                         <label className=" text-gray-600 font-medium">
-                             Name:
+                            Name:
                         </label>
                         <input type="text" name="first" value={userData?.name} onChange={(e) => setUserData({ ...userData, name: e.target.value })} className="w-full px-3 py-2 border rounded-md " required />
                     </div>
 
 
-                    
+
                     <div>
                         <label className="text-gray-600 font-medium">
                             Address:
@@ -125,7 +132,7 @@ const EditProfile = () => {
                         </label>
                         <input type="email" name="email" value={userData?.email} className="w-full px-3 py-2 border rounded-md" required />
                     </div>
-                    
+
 
                     <button type="submit"
                         className="w-full bg-blue-500 text-white py-2 rounded-md"
@@ -136,6 +143,9 @@ const EditProfile = () => {
             </div>
         </div>
 
+        </>
+
+        
 
     )
 }

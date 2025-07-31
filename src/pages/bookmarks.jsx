@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { createBookmark, getFolders } from "../Apiservice/allApi";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router";
+import Navbar from "../component/navbar";
 
 // Extract YouTube thumbnail
 const getYoutubeThumbnail = (url) => {
@@ -18,6 +20,7 @@ const BookmarkPage = () => {
     folderId: "",
     thumbnail: "",
   });
+  const navigate=useNavigate()
 
   useEffect(() => {
     const fetchFolders = async () => {
@@ -54,6 +57,7 @@ const BookmarkPage = () => {
       const res = await createBookmark(form, headers);
       if (res.status === 201) {
         toast.success("Bookmark added!");
+        navigate("/home")
         setForm({ title: "", url: "", description: "", folderId: "", thumbnail: "" });
       } else toast.error("Failed to add bookmark");
     } catch {
@@ -62,7 +66,14 @@ const BookmarkPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6 flex justify-center">
+  <>
+  <Navbar/>
+  <div className="min-h-screen bg-gray-50 p-6 flex justify-center"
+  style={{
+        backgroundImage: "url(https://www.shutterstock.com/image-photo/digital-bookmark-internet-data-technology-260nw-469621283.jpg)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}>
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-xl font-bold mb-4">Add YouTube Bookmark</h2>
 
@@ -115,9 +126,9 @@ const BookmarkPage = () => {
           className="w-full mb-4 p-2 border rounded"
         />
 
-        {form.thumbnail && (
+        {/* {form.thumbnail && (
           <img src={form.thumbnail} alt="Thumbnail" className="mb-4 rounded shadow w-full" />
-        )}
+        )} */}
 
         <button
           type="submit"
@@ -129,6 +140,10 @@ const BookmarkPage = () => {
         <ToastContainer />
       </form>
     </div>
+  </>
+  
+  
+    
   );
 };
 

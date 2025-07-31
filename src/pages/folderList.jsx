@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import { Edit2, Trash2, ChevronDown, ChevronRight } from "lucide-react";
 import "react-toastify/dist/ReactToastify.css";
+import Navbar from "../component/navbar";
 
 // Extract YouTube ID from URL
 const extractYouTubeId = (url) => {
@@ -116,7 +117,13 @@ const FolderListPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    
+    <div className="min-h-screen bg-gray-50 p-6"
+    style={{
+        backgroundImage: "url(https://www.shutterstock.com/image-photo/digital-bookmark-internet-data-technology-260nw-469621283.jpg)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}>
       <h1 className="text-2xl font-bold mb-6 text-gray-800">Your Folders</h1>
 
       {folders.length === 0 ? (
@@ -167,72 +174,69 @@ const FolderListPage = () => {
                   >
                     + Add Bookmark
                   </button>
+                  <div className="flex">
+                    {bookmarksByFolder[folder.folderId]?.length > 0 ?
 
-                  {bookmarksByFolder[folder.folderId]?.length > 0 ? (
-                    <ul className="space-y-4 mt-3">
-                      {bookmarksByFolder[folder.folderId].map((bookmark) => (
-                        <li key={bookmark._id} className="bg-gray-100 p-4 rounded shadow-sm">
-                          <div className="flex items-center gap-4">
-                            <img
-                              src={bookmark.thumbnail}
-                              alt="thumb"
-                              className="w-16 h-10 object-cover rounded"
-                            />
-                            <div className="flex-1">
-                              <a
-                                href={bookmark.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="font-medium text-blue-600 hover:underline"
-                              >
-                                {bookmark.title}
-                              </a>
-                              <p className="text-sm text-gray-500">{bookmark.description}</p>
+                      <>
+                        {bookmarksByFolder[folder.folderId].map((bookmark) => (
+                          <div key={bookmark._id} className="m-1  bg-red-200 w-1/3 rounded shadow-sm">
+                            <div className="">
+                              <div className="p-2">
+                                <a
+                                  href={bookmark.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="font-medium text-blue-600 hover:underline"
+                                >
+                                  {bookmark.title}
+                                </a>
+                                <p className="text-sm text-gray-500">{bookmark.description}</p>
 
-                              {extractYouTubeId(bookmark.url) && (
-                                <iframe
-                                  src={`https://www.youtube.com/embed/${extractYouTubeId(bookmark.url)}`}
-                                  width="100%"
-                                  height="200"
-                                  frameBorder="0"
-                                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                  allowFullScreen
-                                  className="mt-2 rounded"
-                                ></iframe>
-                              )}
+                                {extractYouTubeId(bookmark.url) && (
+                                  <iframe
+                                    src={`https://www.youtube.com/embed/${extractYouTubeId(bookmark.url)}`}
+                                    width="100%"
+                                    height="200"
+                                    frameBorder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                    className="mt-2 rounded"
+                                  ></iframe>
+                                )}
 
-                              <a
-                                href={bookmark.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-sm text-indigo-500 hover:underline mt-1 inline-block"
-                              >
-                                ▶ Watch on YouTube
-                              </a>
-                            </div>
-                            <div className="flex flex-col gap-2 ml-2">
-                              <button
-                                onClick={() => setEditingBookmark({ ...bookmark })}
-                                className="text-blue-600 hover:text-blue-800"
-                              >
-                                <Edit2 size={18} />
-                              </button>
-                              <button
-                                onClick={() =>
-                                  handleDeleteBookmark(bookmark.bookmarkId, folder.folderId)
-                                }
-                                className="text-red-600 hover:text-red-800"
-                              >
-                                <Trash2 size={18} />
-                              </button>
+                                <a
+                                  href={bookmark.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-sm text-indigo-500 hover:underline mt-1 inline-block"
+                                >
+                                  ▶ Watch on YouTube
+                                </a>
+                              </div>
+                              <div className="flex justify-center gap-2 ml-2">
+                                <button
+                                  onClick={() => setEditingBookmark({ ...bookmark })}
+                                  className="text-blue-600 hover:text-blue-800"
+                                >
+                                  <Edit2 size={18} />
+                                </button>
+                                <button
+                                  onClick={() =>
+                                    handleDeleteBookmark(bookmark.bookmarkId, folder.folderId)
+                                  }
+                                  className="text-red-600 hover:text-red-800"
+                                >
+                                  <Trash2 size={18} />
+                                </button>
+                              </div>
                             </div>
                           </div>
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="text-gray-500 italic mt-2">No bookmarks yet</p>
-                  )}
+                        ))}
+                      </>
+                      : (
+                        <p className="text-gray-500 italic mt-2">No bookmarks yet</p>
+                      )}
+                  </div>
                 </>
               )}
             </div>
@@ -342,6 +346,8 @@ const FolderListPage = () => {
 
       <ToastContainer />
     </div>
+    
+    
   );
 };
 

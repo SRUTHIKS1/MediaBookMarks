@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { createFolder } from "../Apiservice/allApi"; // import API function
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router";
+import Navbar from "../component/navbar";
 
 const FolderPage = () => {
   const [folderName, setFolderName] = useState("");
@@ -47,7 +48,14 @@ const FolderPage = () => {
 
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+    <>
+    <Navbar/>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4"
+    style={{
+        backgroundImage: "url(https://www.shutterstock.com/image-photo/digital-bookmark-internet-data-technology-260nw-469621283.jpg)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}>
       <form
         onSubmit={handleCreateFolder}
         className="bg-white p-6 rounded-lg shadow-md w-full max-w-md"
@@ -69,6 +77,8 @@ const FolderPage = () => {
       </form>
       <ToastContainer />
     </div>
+    </>
+    
   );
 };
 

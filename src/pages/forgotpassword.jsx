@@ -66,7 +66,12 @@ const ForgotPassword = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-r from-purple-200 to-indigo-300 p-6 flex items-center justify-center">
+        <div className="min-h-screen bg-gradient-to-r from-purple-200 to-indigo-300 p-6 flex items-center justify-center"
+        style={{
+        backgroundImage: "url(https://www.shutterstock.com/image-photo/digital-bookmark-internet-data-technology-260nw-469621283.jpg)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}>
             <div className="max-w-md w-full">
                 <div className="bg-white p-8 rounded-2xl shadow-lg">
                     <div className="mb-6">
