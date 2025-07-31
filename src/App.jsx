@@ -7,17 +7,18 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 
 
 
-import Navbar from "./component/navbar";
+
 import Bookmarks from "./pages/bookmarks";
 import { Provider } from "react-redux";
 import { store } from "./reduxtoolkit/store";
 import Home from "./pages/home";
 import Profile from "./pages/profile";
 import EditProfile from "./pages/editprofile";
-import ForgotPassword from "./pages/forgotPassword";
+
 import ResetPassword from "./pages/resetpassword";
 import FolderPage from "./pages/folder";
-import FolderListPage from "./pages/folderList";
+import ForgotPassword from "./pages/forgotPassword";
+
 
 
 
@@ -40,7 +41,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/bookmarks" element={<Bookmarks />} />
       
-          <Route path="/forgotPassword" element={<ForgotPassword />} />
+          <Route path="/forgotPassword" element={<ForgotPassword/>} />
           <Route path="/resetPassword/:token" element={<ResetPassword/>} />
            <Route path="/folder" element={<FolderPage/>} />
             <Route path="/profile" element={<Profile/>} />
